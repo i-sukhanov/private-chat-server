@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { NewMessage } from './dto/message.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Message, MessageDocument } from './schemas/message.schema';
-import { TMessage } from './types';
 
 @Injectable()
 export class MessagesService {
@@ -11,26 +10,17 @@ export class MessagesService {
     @InjectModel(Message.name) private messageModel: Model<MessageDocument>,
   ) {}
 
-  getMessages(id: string): TMessage[] {
-    return [
-      {
-        id: 0,
-        text: 'Hello!',
-        userId: Date.now() + '',
-        timeSent: Date.now(),
-      },
-      {
-        id: 1,
-        text: 'How are you?',
-        userId: Date.now() + '',
-        timeSent: Date.now(),
-      },
-    ];
+  async getMessages(id: string): Promise<Message[]> {
+    return this.messageModel.find({ roomId: id }).exec();
   }
 
-  saveMessage(message: NewMessage) {
+  async saveMessage(message: NewMessage) {
     const createdMessage = new this.messageModel(message);
 
     return createdMessage.save();
+  }
+
+  async deleteMessages(id: string) {
+    await this.messageModel.deleteMany({ roomId: id });
   }
 }
