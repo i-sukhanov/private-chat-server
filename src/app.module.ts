@@ -4,13 +4,15 @@ import { AppService } from './app.service';
 import { RoomsModule } from './rooms/rooms.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MessagesModule } from './messages/messages.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+    }),
     RoomsModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://admin:eph8RG4ZuXjZd2hA@chat-instance.xmua5.mongodb.net/test',
-    ),
+    MongooseModule.forRoot(process.env.MONGO_URL),
     MessagesModule,
   ],
   controllers: [AppController],
