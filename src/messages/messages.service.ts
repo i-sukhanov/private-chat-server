@@ -22,5 +22,7 @@ export class MessagesService {
 
   async deleteMessages(id: string) {
     await this.messageModel.deleteMany({ roomId: id });
+
+    return { message: 'Deleted' };
   }
 }
