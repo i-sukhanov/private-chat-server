@@ -5,6 +5,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MessagesModule } from './messages/messages.module';
 import { ConfigModule } from '@nestjs/config';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     RoomsModule,
     MongooseModule.forRoot(process.env.MONGO_URL),
     MessagesModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
