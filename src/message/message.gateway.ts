@@ -21,15 +21,23 @@ export class MessageGateway {
 
   @SubscribeMessage('createMessage')
   async create(@MessageBody() createMessage: CreateMessageDto) {
-    const message = await this.messageService.create(createMessage);
+    const response = await this.messageService.create(createMessage);
 
-    this.server.emit(`room-${createMessage.roomId}`, message);
+    this.server.emit(`message@${createMessage.roomId}`, response);
 
-    return message;
+    return response;
   }
 
   @SubscribeMessage('getAllMessages')
   findAll(@MessageBody() { roomId }: { roomId: string }) {
     return this.messageService.findAll(roomId);
+  }
+
+  @SubscribeMessage('deleteAllMessages')
+  deleteAll(@MessageBody() roomId: string) {
+    const response = this.messageService.delete(roomId);
+    this.server.emit(`erase@${roomId}`);
+
+    return response;
   }
 }
