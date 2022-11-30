@@ -40,4 +40,14 @@ export class MessageGateway {
 
     return response;
   }
+
+  @SubscribeMessage('readMessage')
+  async read(
+    @MessageBody() { messageId, roomId }: { messageId: string; roomId: string },
+  ) {
+    const message = await this.messageService.read(messageId);
+
+    this.server.emit(`read@${roomId}`, message);
+    return message;
+  }
 }

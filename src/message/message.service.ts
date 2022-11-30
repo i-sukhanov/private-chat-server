@@ -25,4 +25,14 @@ export class MessageService {
 
     return { message: 'Deleted' };
   }
+
+  async read(messageId: string) {
+    const message = await this.messageModel.findOneAndUpdate(
+      { id: messageId },
+      { read: true },
+      { new: true },
+    );
+
+    return message;
+  }
 }

@@ -1,5 +1,5 @@
 export type CreateMessageDto = {
-  id: string | number;
+  id: string;
   text: string;
   userId: string;
   timeSent: number;
